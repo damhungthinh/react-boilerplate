@@ -1,4 +1,4 @@
-import { Button, Image, Space, Statistic, Table } from 'antd'
+import { Button, Image, Popconfirm, Space, Statistic, Table } from 'antd'
 
 const columns = [
   {
@@ -56,8 +56,18 @@ type MenuListProps = {
 
 export const List = (props: MenuListProps) => {
   const { data, onOpenEditModal } = props
+  let temp = [
+    ...data,
+    {
+      id: 3,
+      key: '3',
+      name: 'Product 3',
+      img: '/logo192.png',
+      price: 333,
+    },
+  ]
   return (
-    <Table dataSource={data} style={{ marginTop: 10 }}>
+    <Table dataSource={temp} style={{ marginTop: 10 }}>
       <Table.Column
         title='Picture'
         dataIndex='img'
@@ -77,7 +87,14 @@ export const List = (props: MenuListProps) => {
             <Button type='link' onClick={() => onOpenEditModal(record.id)}>
               Edit
             </Button>
-            <a>Delete</a>
+            <Popconfirm
+              title='Delete this menu?'
+              onConfirm={() => {
+                console.log(record.id)
+              }}
+            >
+              <Button type='primary'>Delete</Button>
+            </Popconfirm>
           </Space>
         )}
       />

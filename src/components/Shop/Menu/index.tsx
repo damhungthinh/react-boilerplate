@@ -1,4 +1,4 @@
-import { Layout } from 'antd'
+import { Layout, Modal } from 'antd'
 import { useState } from 'react'
 import { Header } from './Header'
 import { List } from './List'
@@ -23,13 +23,23 @@ const dataSource = [
 
 export const Menu = () => {
   const [isOpen, switchOpen] = useState<boolean>(false)
-
+  const handleOpenEditModal = (productId: number) => {
+    const data = dataSource.find((it) => it.id === productId)
+    if (!data) {
+      return Modal.error({
+        title: 'Error',
+        content: `Menu item with id = ${productId} not found`,
+      })
+    }
+    console.log(data)
+    return switchOpen(true)
+  }
   return (
     <Layout.Content
       style={{ padding: 10, background: '#80808026', height: '100vh' }}
     >
       <Header />
-      <List data={dataSource} onOpenEditModal={() => switchOpen(true)} />
+      <List data={dataSource} onOpenEditModal={handleOpenEditModal} />
       <MenuModal
         isOpen={isOpen}
         onClose={() => switchOpen(false)}
