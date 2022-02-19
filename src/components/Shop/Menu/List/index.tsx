@@ -1,61 +1,14 @@
 import { Button, Image, Popconfirm, Space, Statistic, Table } from 'antd'
-
-const columns = [
-  {
-    title: 'Picture',
-    dataIndex: 'img',
-    key: 'img',
-    render: (url: string) => <Image width={57} height={55} src={url} />,
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    key: 'price',
-    render: (price: number) => <Statistic value={price} precision={2} />,
-  },
-  // {
-  //   title: '',
-  //   key: 'action',
-  //   render: (_: any, record: any) => (
-  //     <Space size='middle'>
-  //       <Button type='link'>Edit {record.id}</Button>
-  //       <Button type='primary' color='red'>
-  //         Delete
-  //       </Button>
-  //     </Space>
-  //   ),
-  // },
-]
-
-const dataSource = [
-  {
-    id: 1,
-    key: '1',
-    name: 'Production 1',
-    img: '/logo512.png',
-    price: 11111,
-  },
-  {
-    id: 2,
-    key: '2',
-    name: 'Product 2',
-    img: '/logo512.png',
-    price: 2222,
-  },
-]
+import { ShopMenuItem } from '../../../../models/ShopMenu'
 
 type MenuListProps = {
-  data: Array<any>
+  data: Array<ShopMenuItem>
   onOpenEditModal: (productId: number) => void
+  onConfirmDelete: (id: number) => void
 }
 
 export const List = (props: MenuListProps) => {
-  const { data, onOpenEditModal } = props
+  const { data, onOpenEditModal, onConfirmDelete } = props
   let temp = [
     ...data,
     {
@@ -67,7 +20,7 @@ export const List = (props: MenuListProps) => {
     },
   ]
   return (
-    <Table dataSource={temp} style={{ marginTop: 10 }}>
+    <Table dataSource={temp} style={{ marginTop: 10 }} pagination={false}>
       <Table.Column
         title='Picture'
         dataIndex='img'
@@ -90,7 +43,7 @@ export const List = (props: MenuListProps) => {
             <Popconfirm
               title='Delete this menu?'
               onConfirm={() => {
-                console.log(record.id)
+                onConfirmDelete(record.id)
               }}
             >
               <Button type='primary'>Delete</Button>

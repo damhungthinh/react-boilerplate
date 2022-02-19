@@ -1,8 +1,13 @@
 import { Button, Card, Col, Descriptions, Row, Typography } from 'antd'
 import { useNavigate } from 'react-router'
 
-export const Header = () => {
+type MenuHeaderProps = {
+  onOpenNewModal: () => void
+}
+
+export const Header = (props: MenuHeaderProps) => {
   const navigate = useNavigate()
+  const { onOpenNewModal } = props
   return (
     <Card>
       <Row align='middle'>
@@ -32,9 +37,18 @@ export const Header = () => {
               <Button type='primary'>Share</Button>
             </Col>
           </Row>
-          <Button type='link' onClick={() => navigate('/orders')}>
-            view orders
-          </Button>
+          <Row>
+            <Col>
+              <Button type='link' onClick={() => navigate('/orders')}>
+                view orders
+              </Button>
+            </Col>
+            <Col>
+              <Button type='primary' onClick={onOpenNewModal}>
+                New item
+              </Button>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Card>

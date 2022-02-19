@@ -1,18 +1,35 @@
 import { Button, Form, Input, InputNumber, Modal, Space } from 'antd'
+import { useEffect } from 'react'
+import { ShopMenuItem } from '../../../../models/ShopMenu'
 
 type MenuModalProps = {
   isOpen: boolean
+  data?: ShopMenuItem
   onClose: () => void
   onFinish: (values: any) => void
   onFinishFailed: (errorInfo: any) => void
 }
 
 export const MenuModal = (props: MenuModalProps) => {
-  const { isOpen, onClose, onFinish, onFinishFailed } = props
-
+  const { isOpen, data, onClose, onFinish, onFinishFailed } = props
+  const [form] = Form.useForm()
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        name: data.name,
+        price: data.price,
+      })
+    } else {
+      form.setFieldsValue({
+        name: '',
+        price: 0,
+      })
+    }
+  }, [data])
   return (
     <Modal title='Edit menu' footer={null} visible={isOpen} onCancel={onClose}>
       <Form
+        form={form}
         name='basic'
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
@@ -23,7 +40,7 @@ export const MenuModal = (props: MenuModalProps) => {
       >
         <Form.Item
           label='Name'
-          name='Name'
+          name='name'
           rules={[{ required: true, message: 'Please input product name!' }]}
         >
           <Input />
@@ -32,7 +49,10 @@ export const MenuModal = (props: MenuModalProps) => {
         <Form.Item
           label='Price'
           name='price'
-          rules={[{ required: true, message: 'Please input product price!' }]}
+          rules={[
+            { required: true, message: 'Please input product price!' },
+            // { min: 10, message: 'Please input product price >= 10!' },
+          ]}
         >
           <InputNumber min={0} />
         </Form.Item>
